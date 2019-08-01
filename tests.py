@@ -7,15 +7,18 @@ from tiny_python_formatter import format_doc
 def test_format_doc():
     code = '''
 def my_func():
-    """my doc"""
+    """my doc
+    """
     pass
 
 
 class MyClass:
-    """my doc class"""
+    """my doc class
+    """
 
     def __init__(self):
-        """my doc func"""
+        """my doc func
+        """
         pass
 '''
     assert format_doc(code) == '''def my_func():

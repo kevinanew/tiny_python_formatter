@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import os
+import sys
 
 
 def format_doc(code):
@@ -21,9 +23,25 @@ def format_doc(code):
     return '\n'.join(results).strip()
 
 
-if __name__ == '__main__':
-    target_file = 'example.py'
+def process_dir(target_dir):
+    assert os.path.isdir(target_dir)
 
-    target_lines = open(target_file).read()
-    format_result = format_doc(target_lines)
-    open(target_file, 'w').write(format_result)
+    for (path, dirs, files) in os.walk(target_dir):
+        # 避免处理隐藏目录
+        files = [_file for _file in files if not _file[0] == '.']
+        dirs[:] = [_dir for _dir in dirs if not _dir[0] == '.']
+
+        for _file in files:
+            if _file[-3:] != '.py':
+                continue
+
+            target_file = os.path.join(path, _file)
+            print(target_file)
+
+            target_lines = open(target_file).read()
+            format_result = format_doc(target_lines)
+            open(target_file, 'w').write(format_result)
+
+
+if __name__ == '__main__':
+    process_dir(sys.argv[1])
