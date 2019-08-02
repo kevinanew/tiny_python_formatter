@@ -13,14 +13,18 @@ def format_doc(code):
     for line in code.splitlines():
         if line.count('"""') == 2 and (is_function_define or is_class_define):
             header, middle, end = line.split('"""')
-            results.append(f'{header}"""{middle}\n{header}"""{end}')
+            results.append(f'{header}"""{middle.strip()}\n{header}"""{end}')
         else:
             results.append(line)
 
         is_function_define = 'def ' in line
         is_class_define = 'class ' in line
 
-    return '\n'.join(results).strip()
+    result = '\n'.join(results).strip() + '\n'
+    if result == '\n':
+        return ''
+    else:
+        return result
 
 
 def process_dir(target_dir):
